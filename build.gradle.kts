@@ -29,7 +29,7 @@ dependencies {
     implementation("org.eclipse.jdt:org.eclipse.jdt.core:3.21.0")
 
     // Use Reactive Extension
-    implementation("io.reactivex.rxjava2':rxkotlin:2.4.0")
+    implementation("io.reactivex.rxjava2:rxkotlin:2.4.0")
 
     // Use the Kotlin test library.
     testImplementation("org.jetbrains.kotlin:kotlin-test")
