@@ -1,6 +1,6 @@
 package io.github.t45k.scm.matching
 
-import io.github.t45k.scm.entity.TokenInformation
+import io.github.t45k.scm.entity.TokenInfo
 import io.github.t45k.scm.entity.to
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -8,9 +8,9 @@ import org.eclipse.jdt.core.ToolFactory
 import org.eclipse.jdt.core.compiler.IScanner
 import org.eclipse.jdt.core.compiler.ITerminalSymbols
 
-class Tokenizer {
-    fun tokenize(content: String): Single<List<TokenInformation>> =
-        Observable.just(content)
+class Tokenizer : ITokenizer {
+    override fun tokenize(contents: String): Single<List<TokenInfo>> =
+        Observable.just(contents)
             .map {
                 ToolFactory
                     .createScanner(false, false, true, false)
@@ -21,17 +21,17 @@ class Tokenizer {
             .map { normalizeIfNeeded(it) }
             .toList()
 
-    private fun normalizeIfNeeded(tokenInformation: TokenInformation): TokenInformation {
+    private fun normalizeIfNeeded(tokenInfo: TokenInfo): TokenInfo {
         @Suppress("DEPRECATION")
-        return when (tokenInformation.tokenNumber) {
-            ITerminalSymbols.TokenNameIdentifier -> 1000 to tokenInformation.lineNumber
+        return when (tokenInfo.tokenNumber) {
+            ITerminalSymbols.TokenNameIdentifier -> 1000 to tokenInfo.lineNumber
             ITerminalSymbols.TokenNameCharacterLiteral,
             ITerminalSymbols.TokenNameDoubleLiteral,
             ITerminalSymbols.TokenNameFloatingPointLiteral,
             ITerminalSymbols.TokenNameIntegerLiteral,
             ITerminalSymbols.TokenNameLongLiteral,
-            ITerminalSymbols.TokenNameStringLiteral -> 1001 to tokenInformation.lineNumber
-            else -> tokenInformation
+            ITerminalSymbols.TokenNameStringLiteral -> 1001 to tokenInfo.lineNumber
+            else -> tokenInfo
         }
     }
 
