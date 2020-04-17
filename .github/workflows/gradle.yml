@@ -24,7 +24,7 @@ jobs:
           mkdir -p ~/junit
           find . -type f -regex ".*/build/test-results/test/.*xml" -exec cp {} ~/junit/ \;
       - name: Upload Coverage
-        uses: bash <(curl -s https://codecov.io/bash)
+        run: bash <(curl -s https://codecov.io/bash)
 
   build_on_windows:
     runs-on: windows-latest
