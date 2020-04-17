@@ -20,6 +20,14 @@ jobs:
         run: chmod +x gradlew
       - name: Build with Gradle
         run: ./gradlew build
+      - name: Measure Coverage
+        run:
+          command: |
+            gradle jacocoTestReport
+            mkdir -p ~/junit
+            find . -type f -regex ".*/build/test-results/test/.*xml" -exec cp {} ~/junit/ \;
+      - name: push
+        run: bash <(curl -s https://codecov.io/bash)
 
   build_on_windows:
     runs-on: windows-latest

@@ -10,6 +10,8 @@ plugins {
 
     // Apply the application plugin to add support for building a CLI application.
     application
+
+    jacoco
 }
 
 repositories {
@@ -41,4 +43,11 @@ dependencies {
 application {
     // Define the main class for the application.
     mainClassName = "io.github.t45k.scm.AppKt"
+}
+
+tasks.jacocoTestReport {
+    reports {
+        xml.isEnabled = true
+        html.isEnabled = true
+    }
 }
