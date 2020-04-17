@@ -21,12 +21,12 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
       - name: Measure Coverage
-        uses: |
-          gradle jacocoTestReport
+        run: |
+          ./gradlew jacocoTestReport
           mkdir -p ~/junit
           find . -type f -regex ".*/build/test-results/test/.*xml" -exec cp {} ~/junit/ \;
       - name: Upload Coverage
-        uses: bash <(curl -s https://codecov.io/bash)
+        run: bash <(curl -s https://codecov.io/bash)
 
   build_on_windows:
     runs-on: windows-latest
