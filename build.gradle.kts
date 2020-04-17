@@ -25,6 +25,12 @@ dependencies {
     // Use the Kotlin JDK 8 standard library.
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
+    // Use Java Tokenizer
+    implementation("org.eclipse.jdt:org.eclipse.jdt.core:3.21.0")
+
+    // Use Reactive Extension
+    implementation("io.reactivex.rxjava2:rxkotlin:2.4.0")
+
     // Use the Kotlin test library.
     testImplementation("org.jetbrains.kotlin:kotlin-test")
 
