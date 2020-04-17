@@ -21,10 +21,7 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
       - name: Measure Coverage
-        run: |
-          ./gradlew jacocoTestReport
-          mkdir -p ~/junit
-          find . -type f -regex ".*/build/test-results/test/.*xml" -exec cp {} ~/junit/ \;
+        run: ./gradlew jacocoTestReport
       - name: Upload Coverage
         uses: codecov/codecov-action@v1
         with:
