@@ -32,3 +32,6 @@ SCM will support the following algorithms.
 - Suffix Array with Doubling
 - Suffix Array with SA-IS
 - Longest Common Prefix Array
+
+## License
+MIT License
