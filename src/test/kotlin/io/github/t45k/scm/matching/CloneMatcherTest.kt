@@ -1,6 +1,6 @@
 package io.github.t45k.scm.matching
 
-import io.github.t45k.scm.entity.HashedCodeFragment
+import io.github.t45k.scm.entity.CodeFragment
 import java.nio.file.Paths
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -10,7 +10,7 @@ internal class CloneMatcherTest {
     fun testSearch() {
         val query = "a>b?a:b;"
         val cloneMatcher = CloneMatcher(query)
-        val searchResult: List<HashedCodeFragment> = cloneMatcher.search(Paths.get("./src/test/sample/Sample.java"))
+        val searchResult: List<CodeFragment> = cloneMatcher.search(Paths.get("./src/test/sample/Sample.java"))
         assertEquals(2, searchResult.size)
         println(searchResult)
     }
@@ -19,7 +19,7 @@ internal class CloneMatcherTest {
     fun testSearchLiteral() {
         val query = "var=0"
         val cloneMatcher = CloneMatcher(query)
-        val searchResult: List<HashedCodeFragment> = cloneMatcher.search(Paths.get("./src/test/sample/Sample.java"))
+        val searchResult: List<CodeFragment> = cloneMatcher.search(Paths.get("./src/test/sample/Sample.java"))
         assertEquals(7, searchResult.size)
         println(searchResult)
     }

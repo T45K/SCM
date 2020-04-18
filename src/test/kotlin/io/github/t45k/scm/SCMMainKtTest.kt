@@ -1,13 +1,26 @@
 package io.github.t45k.scm
 
 import org.kohsuke.args4j.CmdLineException
+import java.io.BufferedReader
 import java.io.ByteArrayOutputStream
 import java.io.PrintStream
+import java.io.StringReader
+import java.nio.file.Paths
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
 internal class SCMMainKtTest {
+    companion object {
+        val output: List<String> = """2 clones are detected
+            |./src/test/sample/Sample.java
+            |    2:         return a > b ? a : b;
+            |./src/test/sample/Sample.java
+            |    7:                 x > y
+            |    8:                         ? x
+            |    9:                         :
+            |   10:                         y""".trimMargin().split("\n")
+    }
 
     @Test
     fun testMainWithInputDir() {
@@ -16,10 +29,16 @@ internal class SCMMainKtTest {
         val args: Array<String> = arrayOf("-i", "./src/test/sample", "-q", "a", ">", " b", "?", " a", ":", "b")
         main(args)
 
-        val output = """HashedCodeFragment(path=./src/test/sample/Sample.java, hash=1495876587, beginLine=3, endLine=3)
-           |HashedCodeFragment(path=./src/test/sample/Sample.java, hash=1495876587, beginLine=8, endLine=11)
-           |""".trimMargin()
-        assertEquals(output, outputStream.toString())
+        val reader = BufferedReader(StringReader(outputStream.toString()))
+        assertEquals(output[0], reader.readLine())
+        assertEquals(Paths.get(output[1]), Paths.get(reader.readLine()))
+        assertEquals(output[2], reader.readLine())
+        reader.readLine()
+        assertEquals(Paths.get(output[3]), Paths.get(reader.readLine()))
+        assertEquals(output[4], reader.readLine())
+        assertEquals(output[5], reader.readLine())
+        assertEquals(output[6], reader.readLine())
+        assertEquals(output[7], reader.readLine())
     }
 
     @Test
@@ -28,11 +47,16 @@ internal class SCMMainKtTest {
         System.setOut(PrintStream(outputStream))
         val args: Array<String> = arrayOf("-s", "./src/test/sample/Sample.java", "-q", "a", ">", " b", "?", " a", ":", "b")
         main(args)
-
-        val output = """HashedCodeFragment(path=./src/test/sample/Sample.java, hash=1495876587, beginLine=3, endLine=3)
-           |HashedCodeFragment(path=./src/test/sample/Sample.java, hash=1495876587, beginLine=8, endLine=11)
-           |""".trimMargin()
-        assertEquals(output, outputStream.toString())
+        val reader = BufferedReader(StringReader(outputStream.toString()))
+        assertEquals(output[0], reader.readLine())
+        assertEquals(Paths.get(output[1]), Paths.get(reader.readLine()))
+        assertEquals(output[2], reader.readLine())
+        reader.readLine()
+        assertEquals(Paths.get(output[3]), Paths.get(reader.readLine()))
+        assertEquals(output[4], reader.readLine())
+        assertEquals(output[5], reader.readLine())
+        assertEquals(output[6], reader.readLine())
+        assertEquals(output[7], reader.readLine())
     }
 
     @Test
