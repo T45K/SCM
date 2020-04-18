@@ -16,9 +16,7 @@ internal class SCMMainKtTest {
         val args: Array<String> = arrayOf("-i", "./src/test/sample", "-q", "a", ">", " b", "?", " a", ":", "b")
         main(args)
 
-        val output = """HashedCodeFragment(path=./src/test/sample/Sample.java, hash=1495876587, beginLine=3, endLine=3)
-           |HashedCodeFragment(path=./src/test/sample/Sample.java, hash=1495876587, beginLine=8, endLine=11)
-           |""".trimMargin()
+        val output = "HashedCodeFragment(path=./src/test/sample/Sample.java, hash=1495876587, beginLine=3, endLine=3)%nHashedCodeFragment(path=./src/test/sample/Sample.java, hash=1495876587, beginLine=8, endLine=11)%n".format()
         assertEquals(output, outputStream.toString())
     }
 
@@ -29,9 +27,7 @@ internal class SCMMainKtTest {
         val args: Array<String> = arrayOf("-s", "./src/test/sample/Sample.java", "-q", "a", ">", " b", "?", " a", ":", "b")
         main(args)
 
-        val output = """HashedCodeFragment(path=./src/test/sample/Sample.java, hash=1495876587, beginLine=3, endLine=3)
-           |HashedCodeFragment(path=./src/test/sample/Sample.java, hash=1495876587, beginLine=8, endLine=11)
-           |""".trimMargin()
+        val output = "HashedCodeFragment(path=./src/test/sample/Sample.java, hash=1495876587, beginLine=3, endLine=3)%nHashedCodeFragment(path=./src/test/sample/Sample.java, hash=1495876587, beginLine=8, endLine=11)%n".format()
         assertEquals(output, outputStream.toString())
     }
 
