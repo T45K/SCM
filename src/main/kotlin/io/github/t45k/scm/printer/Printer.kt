@@ -15,6 +15,7 @@ class Printer {
             (clone.startLine - 1 until clone.endLine)
                 .map { "%5d: ".format(it) + contents[it] }
                 .forEach(::println)
+            println()
         }
     }
 }

@@ -11,6 +11,16 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
 internal class SCMMainKtTest {
+    companion object {
+        val output: List<String> = """2 clones are detected
+            |./src/test/sample/Sample.java
+            |    2:         return a > b ? a : b;
+            |./src/test/sample/Sample.java
+            |    7:                 x > y
+            |    8:                         ? x
+            |    9:                         :
+            |   10:                         y""".trimMargin().split("\n")
+    }
 
     @Test
     fun testMainWithInputDir() {
@@ -20,15 +30,15 @@ internal class SCMMainKtTest {
         main(args)
 
         val reader = BufferedReader(StringReader(outputStream.toString()))
-        assertEquals("2 clones are detected", reader.readLine())
-        assertEquals(Paths.get("./src/test/sample/Sample.java"), Paths.get(reader.readLine()))
-        assertEquals("    2:         return a > b ? a : b;", reader.readLine())
-
-        assertEquals(Paths.get("./src/test/sample/Sample.java"), Paths.get(reader.readLine()))
-        assertEquals("    7:                 x > y", reader.readLine())
-        assertEquals("    8:                         ? x", reader.readLine())
-        assertEquals("    9:                         :", reader.readLine())
-        assertEquals("   10:                         y", reader.readLine())
+        assertEquals(output[0], reader.readLine())
+        assertEquals(Paths.get(output[1]), Paths.get(reader.readLine()))
+        assertEquals(output[2], reader.readLine())
+        reader.readLine()
+        assertEquals(Paths.get(output[3]), Paths.get(reader.readLine()))
+        assertEquals(output[4], reader.readLine())
+        assertEquals(output[5], reader.readLine())
+        assertEquals(output[6], reader.readLine())
+        assertEquals(output[7], reader.readLine())
     }
 
     @Test
@@ -38,15 +48,15 @@ internal class SCMMainKtTest {
         val args: Array<String> = arrayOf("-s", "./src/test/sample/Sample.java", "-q", "a", ">", " b", "?", " a", ":", "b")
         main(args)
         val reader = BufferedReader(StringReader(outputStream.toString()))
-        assertEquals("2 clones are detected", reader.readLine())
-        assertEquals(Paths.get("./src/test/sample/Sample.java"), Paths.get(reader.readLine()))
-        assertEquals("    2:         return a > b ? a : b;", reader.readLine())
-
-        assertEquals(Paths.get("./src/test/sample/Sample.java"), Paths.get(reader.readLine()))
-        assertEquals("    7:                 x > y", reader.readLine())
-        assertEquals("    8:                         ? x", reader.readLine())
-        assertEquals("    9:                         :", reader.readLine())
-        assertEquals("   10:                         y", reader.readLine())
+        assertEquals(output[0], reader.readLine())
+        assertEquals(Paths.get(output[1]), Paths.get(reader.readLine()))
+        assertEquals(output[2], reader.readLine())
+        reader.readLine()
+        assertEquals(Paths.get(output[3]), Paths.get(reader.readLine()))
+        assertEquals(output[4], reader.readLine())
+        assertEquals(output[5], reader.readLine())
+        assertEquals(output[6], reader.readLine())
+        assertEquals(output[7], reader.readLine())
     }
 
     @Test
