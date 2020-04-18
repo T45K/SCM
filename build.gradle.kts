@@ -33,6 +33,9 @@ dependencies {
     // Use Reactive Extension
     implementation("io.reactivex.rxjava2:rxkotlin:2.4.0")
 
+    // Use args4j
+    implementation("args4j:args4j:2.33")
+
     // Use the Kotlin test library.
     testImplementation("org.jetbrains.kotlin:kotlin-test")
 
