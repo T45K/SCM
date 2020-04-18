@@ -1,5 +1,5 @@
 package io.github.t45k.scm.entity
 
-import java.nio.file.Path
+data class HashedCodeFragment(val hash: Long, val codeFragment: CodeFragment)
 
-data class HashedCodeFragment(val path: Path, val hash: Long, val beginLine: Int, val endLine: Int)
+infix fun Long.to(codeFragment: CodeFragment): HashedCodeFragment = HashedCodeFragment(this, codeFragment)
