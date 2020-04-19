@@ -19,11 +19,11 @@ class RollingHash(length: Int) : Calculator<Long> {
         const val BASE: Long = 1_020_544_910
     }
 
-    override fun calcInitial(elements: List<Long>): Long =
+    override fun calcInitial(elements: List<Long>) =
         elements
             .mapIndexed { index, value -> value * memo[index] % MOD }
-            .reduce { acc, i -> (acc + i) % MOD }
+            .reduce { acc, i -> (acc + i) % MOD }.toInt()
 
-    override fun calcWithBefore(before: Long, old: Long, new: Long): Long =
-        ((before - old * memo[0] % MOD + MOD) % MOD * BASE + new) % MOD
+    override fun calcWithBefore(before: Long, old: Long, new: Long) =
+        (((before - old * memo[0] % MOD + MOD) % MOD * BASE + new) % MOD).toInt()
 }
