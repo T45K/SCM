@@ -10,7 +10,7 @@ import java.nio.file.Path
 class CloneMatcher(query: String) : ICloneMatcher {
     private val querySize: Int
     private val rollingHash: RollingHash
-    private val hashedQuery: Long
+    private val hashedQuery: Int
 
     init {
         val tokenizedQuery: List<TokenInfo> = Tokenizer().tokenize(query)
@@ -33,12 +33,12 @@ class CloneMatcher(query: String) : ICloneMatcher {
         if (tokenizedContents.size < querySize) {
             return emptyList()
         }
-        var hash: Long = rollingHash.calcInitial(tokenizedContents.take(querySize).map { it.tokenNumber })
+        var hash: Int = rollingHash.calcInitial(tokenizedContents.take(querySize).map { it.tokenNumber })
         val initialHashedCodeFragment: HashedCodeFragment = hash to CodeFragment(path, tokenizedContents[0].lineNumber, tokenizedContents[querySize - 1].lineNumber)
         val hashedCodeFragments: List<HashedCodeFragment> = (querySize until tokenizedContents.size)
             .map { index ->
                 val oldIndex: Int = index - querySize
-                hash = rollingHash.calcWithBefore(hash, tokenizedContents[oldIndex].tokenNumber, tokenizedContents[index].tokenNumber)
+                hash = rollingHash.calcWithBefore(hash.toLong(), tokenizedContents[oldIndex].tokenNumber, tokenizedContents[index].tokenNumber)
                 hash to CodeFragment(path, tokenizedContents[oldIndex + 1].lineNumber, tokenizedContents[index].lineNumber)
             }
         return listOf(initialHashedCodeFragment).plus(hashedCodeFragments)
