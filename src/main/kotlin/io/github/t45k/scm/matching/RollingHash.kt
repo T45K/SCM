@@ -1,29 +1,47 @@
 package io.github.t45k.scm.matching
 
-class RollingHash(length: Int) : Calculator<Long> {
-    private val memo: List<Long>
+import io.github.t45k.scm.matching.RollingHash.HashedInt.Companion.MOD
+
+class RollingHash(length: Int) : Calculator<Int> {
+    private val memo: List<HashedInt>
 
     init {
-        var tmp = 1L
+        var tmp = 1.toHashable()
         memo = (1 until length)
+            .map { it.toHashable() }
             .map {
-                tmp = tmp * BASE % MOD
+                tmp *= BASE
                 tmp
             }
             .reversed()
-            .plus(1)
+            .plus(1.toHashable())
     }
 
     companion object {
-        const val MOD: Long = 2_147_483_647
-        const val BASE: Long = 1_020_544_910
+        const val BASE: Int = 1_020_544_910
     }
 
-    override fun calcInitial(elements: List<Long>) =
+    override fun calcInitial(elements: List<Int>) =
         elements
-            .mapIndexed { index, value -> value * memo[index] % MOD }
-            .reduce { acc, i -> (acc + i) % MOD }.toInt()
+            .map { it.toHashable() }
+            .mapIndexed { index, value -> value * memo[index] }
+            .reduce { acc, i -> (acc + i) }.intValue
 
-    override fun calcWithBefore(before: Long, old: Long, new: Long) =
-        (((before - old * memo[0] % MOD + MOD) % MOD * BASE + new) % MOD).toInt()
+    override fun calcWithBefore(before: Int, old: Int, new: Int) =
+        ((before - old * memo[0]) * BASE + new).intValue
+
+    internal data class HashedInt(val intValue: Int) {
+        companion object {
+            const val MOD: Int = 2_147_483_647
+        }
+    }
+
+    private fun Int.toHashable() = HashedInt(this)
+    private fun Long.toHashable() = (this % MOD.toLong()).toInt().toHashable()
+    private operator fun HashedInt.times(a: Int) = (this.intValue.toLong() * a.toLong()).toHashable()
+    private operator fun HashedInt.times(a: HashedInt) = this * a.intValue
+    private operator fun HashedInt.plus(a: Int) = ((this.intValue.toLong() + a.toLong())).toHashable()
+    private operator fun HashedInt.plus(a: HashedInt) = this + a.intValue
+    private operator fun Int.times(a: HashedInt) = a * this
+    private operator fun Int.minus(a: HashedInt) = (this.toLong() + MOD.toLong() - a.intValue.toLong()).toHashable()
 }

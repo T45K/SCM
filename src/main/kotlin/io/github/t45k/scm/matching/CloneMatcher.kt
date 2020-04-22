@@ -13,7 +13,7 @@ class CloneMatcher(query: String) : ICloneMatcher {
     private val hashedQuery: Int
 
     init {
-        val tokenizedQuery: List<TokenInfo> = Tokenizer().tokenize(query)
+        val tokenizedQuery: List<TokenInfo> = JDTTokenizer().tokenize(query)
         querySize = tokenizedQuery.size
         rollingHash = RollingHash(querySize)
         hashedQuery = rollingHash.calcInitial(tokenizedQuery.map { it.tokenNumber })
@@ -23,7 +23,7 @@ class CloneMatcher(query: String) : ICloneMatcher {
 
     override fun search(path: Path): List<CodeFragment> {
         val contents: String = Files.readString(path)!!
-        val tokenizedContents: List<TokenInfo> = Tokenizer().tokenize(contents)
+        val tokenizedContents: List<TokenInfo> = JDTTokenizer().tokenize(contents)
         return hashContents(path, tokenizedContents)
             .filter { it.hash == hashedQuery }
             .map { it.codeFragment }
@@ -38,7 +38,7 @@ class CloneMatcher(query: String) : ICloneMatcher {
         val hashedCodeFragments: List<HashedCodeFragment> = (querySize until tokenizedContents.size)
             .map { index ->
                 val oldIndex: Int = index - querySize
-                hash = rollingHash.calcWithBefore(hash.toLong(), tokenizedContents[oldIndex].tokenNumber, tokenizedContents[index].tokenNumber)
+                hash = rollingHash.calcWithBefore(hash, tokenizedContents[oldIndex].tokenNumber, tokenizedContents[index].tokenNumber)
                 hash to CodeFragment(path, tokenizedContents[oldIndex + 1].lineNumber, tokenizedContents[index].lineNumber)
             }
         return listOf(initialHashedCodeFragment).plus(hashedCodeFragments)
