@@ -18,11 +18,11 @@ fun main(args: Array<String>) {
         throw e
     }
 
-    val cloneMatcher = CloneMatcher(config.query.joinToString(" "))
+    val cloneMatcher = CloneMatcher(config)
     val printer = Printer()
     when {
-        config.isInputDirInitialized() -> cloneMatcher.search(Files.walk(config.inputDir).filter { it.toString().endsWith(".java") }.toList())
-        config.isSourceFileInitialized() -> cloneMatcher.search(config.sourceFile)
+        config.isInputDirInitialized() -> cloneMatcher.match(Files.walk(config.inputDir).filter { it.toString().endsWith(".java") }.toList())
+        config.isSourceFileInitialized() -> cloneMatcher.match(config.sourceFile)
         else -> throw NoInputException("Specify Directory or File")
     }.let(printer::printResult)
 }
