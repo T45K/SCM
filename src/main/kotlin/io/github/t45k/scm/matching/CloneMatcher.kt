@@ -1,46 +1,23 @@
 package io.github.t45k.scm.matching
 
+import io.github.t45k.scm.SCMConfiguration
 import io.github.t45k.scm.entity.CodeFragment
-import io.github.t45k.scm.entity.HashedCodeFragment
-import io.github.t45k.scm.entity.TokenInfo
-import io.github.t45k.scm.entity.to
+import io.github.t45k.scm.matching.algorithms.Algorithm
+import io.github.t45k.scm.matching.algorithms.RollingHash
 import java.nio.file.Files
 import java.nio.file.Path
 
-class CloneMatcher(query: String) : ICloneMatcher {
-    private val querySize: Int
-    private val rollingHash: RollingHash
-    private val hashedQuery: Int
+class CloneMatcher(config: SCMConfiguration) : ICloneMatcher {
+    private val query = config.query.joinToString(" ").let { JDTTokenizer().tokenize(it) }
+    private val algorithm: Algorithm = RollingHash(query.map { it.tokenNumber })
 
-    init {
-        val tokenizedQuery: List<TokenInfo> = Tokenizer().tokenize(query)
-        querySize = tokenizedQuery.size
-        rollingHash = RollingHash(querySize)
-        hashedQuery = rollingHash.calcInitial(tokenizedQuery.map { it.tokenNumber })
-    }
+    override fun match(paths: List<Path>) = paths.flatMap { match(it) }
 
-    override fun search(paths: List<Path>) = paths.flatMap { search(it) }
-
-    override fun search(path: Path): List<CodeFragment> {
-        val contents: String = Files.readString(path)!!
-        val tokenizedContents: List<TokenInfo> = Tokenizer().tokenize(contents)
-        return hashContents(path, tokenizedContents)
-            .filter { it.hash == hashedQuery }
-            .map { it.codeFragment }
-    }
-
-    private fun hashContents(path: Path, tokenizedContents: List<TokenInfo>): List<HashedCodeFragment> {
-        if (tokenizedContents.size < querySize) {
-            return emptyList()
-        }
-        var hash: Int = rollingHash.calcInitial(tokenizedContents.take(querySize).map { it.tokenNumber })
-        val initialHashedCodeFragment: HashedCodeFragment = hash to CodeFragment(path, tokenizedContents[0].lineNumber, tokenizedContents[querySize - 1].lineNumber)
-        val hashedCodeFragments: List<HashedCodeFragment> = (querySize until tokenizedContents.size)
-            .map { index ->
-                val oldIndex: Int = index - querySize
-                hash = rollingHash.calcWithBefore(hash.toLong(), tokenizedContents[oldIndex].tokenNumber, tokenizedContents[index].tokenNumber)
-                hash to CodeFragment(path, tokenizedContents[oldIndex + 1].lineNumber, tokenizedContents[index].lineNumber)
+    override fun match(path: Path): List<CodeFragment> =
+        Files.readString(path)!!
+            .let { JDTTokenizer().tokenize(it) }
+            .let { tokenSequence ->
+                algorithm.search(tokenSequence.map { it.tokenNumber })
+                    .map { CodeFragment(path, tokenSequence[it].lineNumber, tokenSequence[it + query.size - 1].lineNumber) }
             }
-        return listOf(initialHashedCodeFragment).plus(hashedCodeFragments)
-    }
 }

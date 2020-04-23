@@ -4,6 +4,6 @@ import io.github.t45k.scm.entity.CodeFragment
 import java.nio.file.Path
 
 interface ICloneMatcher {
-    fun search(paths: List<Path>): List<CodeFragment>
-    fun search(path: Path): List<CodeFragment>
+    fun match(paths: List<Path>): List<CodeFragment>
+    fun match(path: Path): List<CodeFragment>
 }
