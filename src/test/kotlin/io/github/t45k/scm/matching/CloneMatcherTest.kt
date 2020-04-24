@@ -8,22 +8,22 @@ import kotlin.test.assertEquals
 
 internal class CloneMatcherTest {
     @Test
-    fun testSearch() {
+    fun testMatch() {
         val query = "a>b?a:b;"
         val config = SCMConfiguration().also { it.query = arrayOf(query) }
         val cloneMatcher = CloneMatcher(config)
-        val searchResult: List<CodeFragment> = cloneMatcher.match(Paths.get("./src/test/sample/Sample.java"))
-        assertEquals(2, searchResult.size)
-        println(searchResult)
+        val matchingResult: List<CodeFragment> = cloneMatcher.match(Paths.get("./src/test/sample/Sample.java"))
+        assertEquals(2, matchingResult.size)
+        println(matchingResult)
     }
 
     @Test
-    fun testSearchLiteral() {
+    fun testMatchLiteral() {
         val query = "var=0"
         val config = SCMConfiguration().also { it.query = arrayOf(query) }
         val cloneMatcher = CloneMatcher(config)
-        val searchResult: List<CodeFragment> = cloneMatcher.match(Paths.get("./src/test/sample/Sample.java"))
-        assertEquals(7, searchResult.size)
-        println(searchResult)
+        val matchingResult: List<CodeFragment> = cloneMatcher.match(Paths.get("./src/test/sample/Sample.java"))
+        assertEquals(7, matchingResult.size)
+        println(matchingResult)
     }
 }
