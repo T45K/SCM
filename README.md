@@ -3,7 +3,7 @@
 
 # SCM 
 SCM is a clone (duplicated code) detection tool for Java.
-Based on the concept of [Code Clone Matching](https://arxiv.org/pdf/2003.05615.pdf), SCM detects code fragments similar to query using a token-based technique.
+Based on the concept of [Code Clone Matching](https://arxiv.org/pdf/2003.05615.pdf), SCM detects code fragments similar to query by using a token-based technique.
 SCM can detect type-1 (exact copy) and type-2 (renamed) clones.
 
 **Tips**<br>
@@ -11,6 +11,7 @@ SCM is developed for my learning of **String Search Algorithm**.
 I can't guarantee SCM will work properly.
 Currently, SCM supports the following algorithm.
 - Rolling Hash
+- Suffix Array with naive construction
 
 ## Requirements
 JDK 14
