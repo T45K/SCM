@@ -11,7 +11,6 @@ import org.kohsuke.args4j.spi.PathOptionHandler
 import org.kohsuke.args4j.spi.Setter
 import java.nio.file.Path
 
-
 class SCMConfiguration {
     @Option(name = "-i", aliases = ["--input-dir"], usage = "Input directory", handler = PathOptionHandler::class)
     lateinit var inputDir: Path
@@ -22,8 +21,13 @@ class SCMConfiguration {
     @Option(name = "-q", aliases = ["--query"], usage = "Query", required = true, handler = QueryHandler::class)
     lateinit var query: Array<String>
 
+    @Option(name = "-a", aliases = ["--algorithm"], usage = "Algorithm")
+    var algorithms: Algorithms = Algorithms.ROLLING_HASH
+
     fun isInputDirInitialized(): Boolean = ::inputDir.isInitialized
     fun isSourceFileInitialized(): Boolean = ::sourceFile.isInitialized
+
+    enum class Algorithms { ROLLING_HASH, SUFFIX_ARRAY }
 }
 
 class QueryHandler(parser: CmdLineParser, option: OptionDef, setter: Setter<String>)
