@@ -1,7 +1,10 @@
-package io.github.t45k.scm.matching.algorithms
+package io.github.t45k.scm.matching.algorithms.rollingHash
+
+import io.github.t45k.scm.entity.TokenSequence
+import io.github.t45k.scm.matching.algorithms.Algorithm
 
 
-class RollingHash(query: List<Int>) : Algorithm(query) {
+class RollingHash(query: TokenSequence) : Algorithm(query) {
     private val querySize: Int = query.size
 
     private val memo: List<HashedInt>
@@ -24,7 +27,7 @@ class RollingHash(query: List<Int>) : Algorithm(query) {
         const val BASE: Int = 1_020_544_910
     }
 
-    override fun search(from: List<Int>): List<Int> {
+    override fun search(from: TokenSequence): List<Int> {
         if (from.size < querySize) {
             return emptyList()
         }
@@ -41,7 +44,7 @@ class RollingHash(query: List<Int>) : Algorithm(query) {
             .map { it.first }
     }
 
-    private fun calcInitial(elements: List<Int>) =
+    private fun calcInitial(elements: TokenSequence) =
         elements
             .map { it.toHashable() }
             .mapIndexed { index, value -> value * memo[index] }

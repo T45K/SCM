@@ -1,6 +1,6 @@
-package io.github.t45k.scm.matching.algorithms
+package io.github.t45k.scm.matching.algorithms.rollingHash
 
-import io.github.t45k.scm.matching.algorithms.HashedInt.Companion.MOD
+import io.github.t45k.scm.matching.algorithms.rollingHash.HashedInt.Companion.MOD
 
 data class HashedInt(val value: Int) {
     companion object {

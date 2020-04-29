@@ -1,6 +1,7 @@
 package io.github.t45k.scm.matching.algorithms
 
 import io.github.t45k.scm.matching.JDTTokenizer
+import io.github.t45k.scm.matching.algorithms.rollingHash.RollingHash
 import java.nio.file.Files
 import java.nio.file.Paths
 import kotlin.test.Test
