@@ -1,6 +1,5 @@
 package io.github.t45k.scm.matching.algorithms
 
-import io.github.t45k.scm.matching.algorithms.RollingHash.HashedInt.Companion.MOD
 
 class RollingHash(query: List<Int>) : Algorithm(query) {
     private val querySize: Int = query.size
@@ -46,23 +45,8 @@ class RollingHash(query: List<Int>) : Algorithm(query) {
         elements
             .map { it.toHashable() }
             .mapIndexed { index, value -> value * memo[index] }
-            .reduce { acc, i -> (acc + i) }.intValue
+            .reduce { acc, i -> (acc + i) }.value
 
     private fun calcWithBefore(before: Int, old: Int, new: Int) =
-        ((before - old * memo[0]) * BASE + new).intValue
-
-    internal data class HashedInt(val intValue: Int) {
-        companion object {
-            const val MOD: Int = 2_147_483_647
-        }
-    }
-
-    private fun Int.toHashable() = HashedInt(this)
-    private fun Long.toHashable() = (this % MOD.toLong()).toInt().toHashable()
-    private operator fun HashedInt.times(a: Int) = (this.intValue.toLong() * a.toLong()).toHashable()
-    private operator fun HashedInt.times(a: HashedInt) = this * a.intValue
-    private operator fun HashedInt.plus(a: Int) = ((this.intValue.toLong() + a.toLong())).toHashable()
-    private operator fun HashedInt.plus(a: HashedInt) = this + a.intValue
-    private operator fun Int.times(a: HashedInt) = a * this
-    private operator fun Int.minus(a: HashedInt) = (this.toLong() + MOD.toLong() - a.intValue.toLong()).toHashable()
+        ((before - old * memo[0]) * BASE + new).value
 }
