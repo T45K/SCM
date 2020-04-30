@@ -1,10 +1,10 @@
 package io.github.t45k.scm.matching.algorithms.rollingHash
 
 import io.github.t45k.scm.entity.TokenSequence
-import io.github.t45k.scm.matching.algorithms.Algorithm
+import io.github.t45k.scm.matching.algorithms.StringSearchAlgorithm
 
 
-class RollingHash(query: TokenSequence) : Algorithm(query) {
+class RollingHash(query: TokenSequence) : StringSearchAlgorithm(query) {
     private val querySize: Int = query.size
 
     private val memo: List<HashedInt>
