@@ -4,7 +4,7 @@
 # SCM 
 SCM is a clone (duplicated code) detection tool for Java.
 Based on the concept of [Code Clone Matching](https://arxiv.org/pdf/2003.05615.pdf), SCM detects code fragments similar to query by using a token-based technique.
-SCM can detect type-1 (exact copy) and type-2 (renamed) clones.
+SCM can detect type-1 (exact) and type-2 (renamed) clones.
 
 **Tips**<br>
 SCM is developed for my learning of **String Search Algorithm**. 
@@ -12,6 +12,7 @@ I can't guarantee SCM will work properly.
 Currently, SCM supports the following algorithm.
 - Rolling Hash
 - Suffix Array with naive construction
+- Suffix Array with Doubling construction
 
 ## Requirements
 JDK 14
@@ -26,11 +27,10 @@ JDK 14
 |Directory|`-i`|`--input-dir`|Path of directory containing all source files from which you want to detect clones.<br>You must specify this or `-s` option.|
 |Source file|`-s`|`--source-file`|Path of source file from which you want to detect clones.<br>You must specify this or `-i` option|
 |Query|`-q`|`--query`|Query. You must specify this option.|
-|Algorithm|`-a`|`--algorithm`|Algorithm. You can specify one from the following algorithms.<br>`ROLLING_HASH(default)`,`SUFFIX_ARRAY`|
+|Algorithm|`-a`|`--algorithm`|Algorithm. You can specify one from the following algorithms.<br>`ROLLING_HASH(default)`,`SUFFIX_ARRAY_NAIVE`,`SUFFIX_ARRAY(_DOUBLING)`|
 
 ## To be implemented
 SCM will support the following algorithms.
-- Suffix Array with Doubling
 - Suffix Array with SA-IS
 - Longest Common Prefix Array
 
@@ -47,7 +47,16 @@ In SCM, the base number is `1,020,544,910`, the modulo number is `2,147,483,647`
 **Suffix Array** is a sorted array of all suffixes of a string(by [Wikipedia](https://en.wikipedia.org/wiki/Suffix_array)).
 By constructing Suffix Array, you can use binary search so that you can search strings in *O(m log(n))*.
 
-Currently, SCM uses a naive Suffix Array construction method, and it requires *O(n^2 log(n))*  
+SCM implements the following methods.
+- Naive
+
+Naive method is just sorting all suffixes.
+Comparing strings whose length are N requires *O(n)*, thus, Naive method requires *O(n^2 log(n))*.
+
+- Doubling
+
+Doubling method is sorting and comparing suffixes by length of power of 2.
+It requires *O(n (log n) ^ 2)*.
 
 ## License
 MIT License

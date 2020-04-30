@@ -20,6 +20,7 @@ repositories {
     jcenter()
 }
 
+@Suppress("DEPRECATION")
 dependencies {
     // Align versions of all Kotlin components
     compile(platform("org.jetbrains.kotlin:kotlin-bom"))

@@ -22,12 +22,12 @@ class SCMConfiguration {
     lateinit var query: Array<String>
 
     @Option(name = "-a", aliases = ["--algorithm"], usage = "Algorithm")
-    var algorithms: Algorithms = Algorithms.ROLLING_HASH
+    var algorithm: Algorithm = Algorithm.ROLLING_HASH
 
     fun isInputDirInitialized(): Boolean = ::inputDir.isInitialized
     fun isSourceFileInitialized(): Boolean = ::sourceFile.isInitialized
 
-    enum class Algorithms { ROLLING_HASH, SUFFIX_ARRAY }
+    enum class Algorithm { ROLLING_HASH, SUFFIX_ARRAY, SUFFIX_ARRAY_NAIVE, SUFFIX_ARRAY_DOUBLING }
 }
 
 class QueryHandler(parser: CmdLineParser, option: OptionDef, setter: Setter<String>)
