@@ -27,7 +27,7 @@ class SCMConfiguration {
     fun isInputDirInitialized(): Boolean = ::inputDir.isInitialized
     fun isSourceFileInitialized(): Boolean = ::sourceFile.isInitialized
 
-    enum class Algorithm { ROLLING_HASH, SUFFIX_ARRAY_NAIVE, SUFFIX_ARRAY_DOUBLING }
+    enum class Algorithm { ROLLING_HASH, SUFFIX_ARRAY, SUFFIX_ARRAY_NAIVE, SUFFIX_ARRAY_DOUBLING }
 }
 
 class QueryHandler(parser: CmdLineParser, option: OptionDef, setter: Setter<String>)
